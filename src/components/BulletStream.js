@@ -1,10 +1,10 @@
-'use strict';
+"use strict";
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
-import { ViroSphere, ViroMaterials } from 'react-viro';
+import { ViroSphere, ViroMaterials } from "react-viro";
 
 const BULLET_POSITION_FACTOR = 0.3;
 
@@ -13,7 +13,7 @@ export default class BulletStream extends Component {
     super();
     this.state = {
       position: [0, 0, -1],
-      alive: true,
+      alive: true
     };
   }
   static getDerivedStateFromProps(props) {
@@ -21,15 +21,15 @@ export default class BulletStream extends Component {
       position: [
         props.position[0] - props.up[0] * BULLET_POSITION_FACTOR,
         props.position[1] - props.up[1] * BULLET_POSITION_FACTOR,
-        props.position[2] - props.up[2] * BULLET_POSITION_FACTOR,
-      ],
+        props.position[2] - props.up[2] * BULLET_POSITION_FACTOR
+      ]
     };
   }
   componentDidMount() {
     this.interval = setInterval(() => {
       this.setState({
         ...BulletStream.getDerivedStateFromProps(this.props),
-        alive: !this.state.alive,
+        alive: !this.state.alive
       });
     }, 300);
   }
@@ -44,16 +44,16 @@ export default class BulletStream extends Component {
         widthSegmentCount={20}
         radius={2}
         position={this.state.position}
-        scale={[0.025, 0.025, 0.025]}
+        scale={[0.006, 0.006, 0.006]}
         physicsBody={{
-          type: 'Dynamic',
+          type: "Dynamic",
           mass: 1,
           useGravity: false,
           force: {
-            value: this.props.force,
-          },
+            value: this.props.force
+          }
         }}
-        materials={['spherematerial']}
+        materials={["spherematerial"]}
       />
     );
   }
@@ -61,8 +61,8 @@ export default class BulletStream extends Component {
 
 ViroMaterials.createMaterials({
   spherematerial: {
-    diffuseColor: '#FF0',
-  },
+    diffuseColor: "#6B6B6B"
+  }
 });
 
 module.exports = BulletStream;

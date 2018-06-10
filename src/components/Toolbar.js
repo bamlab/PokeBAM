@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
   },
   gun: {
     position: "absolute",
-    right: 110,
+    right: 10,
     bottom: 0,
     width: 200,
     height: 150,
-    transform: [{ rotate: "35deg" }, { translateY: 150 }, { translateX: 100 }]
+    transform: [{ rotate: "35deg" }, { translateY: 85 }]
   },
   image: {
     position: "absolute",

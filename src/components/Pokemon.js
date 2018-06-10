@@ -17,11 +17,11 @@ import {
 import WeaponEnabledContext from 'PokeBAM/src/WeaponEnabledContext';
 
 export default class Pokemon extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      position: [0, 0, 0],
-      visible: true
+      visible: true,
+      life: 5
     };
   }
   render() {
@@ -82,13 +82,17 @@ export default class Pokemon extends Component {
                   type: 'Static'
                 }}
                 onCollision={() => {
-                  this.setState({ visible: false }, () => {
-                    setTimeout(() => {
-                      this.setState({ visible: true });
-                    }, 5000);
-                  });
+                  if (this.state.life === 1 || !weaponEnabled) {
+                    this.setState({ visible: false, life: 5 }, () => {
+                      setTimeout(() => {
+                        this.setState({ visible: true });
+                      }, 5000);
+                    });
+                  } else {
+                    this.setState({ life: this.state.life - 1 });
+                  }
                 }}
-                position={[0, 0, -3]}
+                position={[0, 0, -2]}
                 rotation={[-90, 0, 0]}
                 dragType="FixedToWorld"
                 scale={[0.02, 0.02, 0.02]}

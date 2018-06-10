@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 import {
   Viro3DObject,
@@ -12,9 +12,9 @@ import {
   ViroNode,
   ViroQuad,
   ViroParticleEmitter
-} from "react-viro";
+} from 'react-viro';
 
-import WeaponEnabledContext from "PokeBAM/src/WeaponEnabledContext";
+import WeaponEnabledContext from 'PokeBAM/src/WeaponEnabledContext';
 
 export default class Pokemon extends Component {
   constructor() {
@@ -36,7 +36,7 @@ export default class Pokemon extends Component {
           loop={true}
           fixedToEmitter={true}
           image={{
-            source: require("PokeBAM/src/assets/blood.png"),
+            source: require('PokeBAM/src/assets/blood.png'),
             height: 0.3,
             width: 0.3,
             bloomThreshold: 0.0
@@ -49,7 +49,7 @@ export default class Pokemon extends Component {
           particleAppearance={{
             opacity: {
               initialRange: [0.2, 0.2],
-              factor: "Time",
+              factor: 'Time',
               interpolation: [
                 { endValue: 0.2, interval: [0, 200] },
                 { endValue: 0.0, interval: [200, 500] }
@@ -57,7 +57,7 @@ export default class Pokemon extends Component {
             },
             scale: {
               initialRange: [[1, 1, 1], [1, 1, 1]],
-              factor: "Time",
+              factor: 'Time',
               interpolation: [{ endValue: [0, 0, 0], interval: [150, 500] }]
             }
           }}
@@ -69,17 +69,17 @@ export default class Pokemon extends Component {
           {({ weaponEnabled }) => {
             return (
               <Viro3DObject
-                source={require("PokeBAM/src/assets/3D/Pokemons/Pidgey/Pidgey.vrx")}
+                source={require('PokeBAM/src/assets/3D/Pokemons/Pidgey/Pidgey.vrx')}
                 resources={[
-                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Body1.png"),
-                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Body2.png"),
-                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_BodyNor.png"),
-                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Eye1.png"),
-                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Eye2.png"),
-                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_EyeNor.png")
+                  require('PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Body1.png'),
+                  require('PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Body2.png'),
+                  require('PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_BodyNor.png'),
+                  require('PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Eye1.png'),
+                  require('PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Eye2.png'),
+                  require('PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_EyeNor.png')
                 ]}
                 physicsBody={{
-                  type: "Static"
+                  type: 'Static'
                 }}
                 onCollision={() => {
                   this.setState({ visible: false }, () => {
@@ -93,19 +93,7 @@ export default class Pokemon extends Component {
                 dragType="FixedToWorld"
                 scale={[0.02, 0.02, 0.02]}
                 type="VRX"
-                visible
-                onClick={() => {
-                  if (weaponEnabled) {
-                    this.props.scene
-                      .getCameraOrientationAsync()
-                      .then(orientation => {
-                        this.setState({
-                          visible: false,
-                          position: orientation.position
-                        });
-                      });
-                  }
-                }}
+                visible={this.state.visible}
               />
             );
           }}
@@ -117,7 +105,7 @@ export default class Pokemon extends Component {
 
 ViroMaterials.createMaterials({
   ground: {
-    diffuseColor: "transparent"
+    diffuseColor: 'transparent'
   }
 });
 

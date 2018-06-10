@@ -1,15 +1,15 @@
-'use strict';
+"use strict";
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
-import { ViroARScene, ViroText, ViroConstants } from 'react-viro';
+import { ViroARScene, ViroText, ViroConstants } from "react-viro";
 
-import WeaponEnabledContext from 'PokeBAM/src/WeaponEnabledContext';
-import Pokemon from './components/Pokemon';
-import Pokeball from './components/Pokeball';
-import BulletStream from './components/BulletStream';
+import WeaponEnabledContext from "PokeBAM/src/WeaponEnabledContext";
+import Pokemon from "./components/Pokemon";
+import Pokeball from "./components/Pokeball";
+import BulletStream from "./components/BulletStream";
 
 export default class Home extends Component {
   constructor() {
@@ -17,7 +17,7 @@ export default class Home extends Component {
 
     // Set initial state here
     this.state = {
-      text: 'Starting PokeBAM...',
+      text: "Starting PokeBAM...",
       orientation: {
         position: [0, 0, 0],
         orientation: [0, 0, 0],
@@ -97,11 +97,11 @@ export default class Home extends Component {
 
 var styles = StyleSheet.create({
   helloWorldTextStyle: {
-    fontFamily: 'Arial',
+    fontFamily: "Arial",
     fontSize: 30,
-    color: '#ffffff',
-    textAlignVertical: 'center',
-    textAlign: 'center'
+    color: "#ffffff",
+    textAlignVertical: "center",
+    textAlign: "center"
   }
 });
 

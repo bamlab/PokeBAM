@@ -1,12 +1,12 @@
-'use strict';
+"use strict";
 
-import React, { Component } from 'react';
-import { Image, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { Component } from "react";
+import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 
-const pokeballImage = require('PokeBAM/src/assets/pokeball_button.png');
-const weaponImage = require('PokeBAM/src/assets/weapon_button.png');
+const pokeballImage = require("PokeBAM/src/assets/pokeball_button.png");
+const weaponImage = require("PokeBAM/src/assets/weapon_button.png");
 
-import WeaponEnabledContext from 'PokeBAM/src/WeaponEnabledContext';
+import WeaponEnabledContext from "PokeBAM/src/WeaponEnabledContext";
 
 export default class Toolbar extends Component {
   constructor(props) {
@@ -22,7 +22,7 @@ export default class Toolbar extends Component {
               {weaponEnabled ? (
                 <Image
                   style={styles.gun}
-                  source={require('PokeBAM/src/assets/weapon.png')}
+                  source={require("PokeBAM/src/assets/weapon.png")}
                   onLoadEnd={onWeaponLoaded}
                 />
               ) : null}
@@ -42,26 +42,27 @@ export default class Toolbar extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 0,
     right: 0,
     width: 100,
-    height: 100,
+    height: 100
   },
   gun: {
-    position: 'absolute',
+    position: "absolute",
     right: 110,
     bottom: 0,
     width: 200,
     height: 150,
+    transform: [{ rotate: "35deg" }, { translateY: 150 }, { translateX: 100 }]
   },
   image: {
-    position: 'absolute',
+    position: "absolute",
     bottom: 20,
     right: 20,
     width: 80,
-    height: 80,
-  },
+    height: 80
+  }
 });
 
 module.exports = Toolbar;

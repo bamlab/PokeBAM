@@ -7,11 +7,17 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { ViroARSceneNavigator } from 'react-viro';
+import { ViroARSceneNavigator } from "react-viro";
 
-import { VIRO_API_KEY } from './environment.secret';
+import { StyleSheet, View } from "react-native";
+
+import WeaponEnabledContext from "./src/WeaponEnabledContext";
+
+import { VIRO_API_KEY } from "./environment.secret";
+
+import Toolbar from "./src/components/Toolbar";
 
 /*
  TODO: Insert your API key below
@@ -21,16 +27,18 @@ var sharedProps = {
 };
 
 // Sets the default scene you want for AR
-var InitialARScene = require('./src/Home');
+var InitialARScene = require("./src/Home");
 
 export default class ViroSample extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
-      sharedProps: sharedProps
+      sharedProps: sharedProps,
+      weaponEnabled: false
     };
     this._getARNavigator = this._getARNavigator.bind(this);
+    this._toggleWeaponEnabled = this._toggleWeaponEnabled.bind(this);
   }
 
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
@@ -39,15 +47,35 @@ export default class ViroSample extends Component {
     return this._getARNavigator();
   }
 
+  _toggleWeaponEnabled() {
+    this.setState({ weaponEnabled: !this.state.weaponEnabled });
+  }
+
   // Returns the ViroARSceneNavigator which will start the AR experience
   _getARNavigator() {
     return (
-      <ViroARSceneNavigator
-        {...this.state.sharedProps}
-        initialScene={{ scene: InitialARScene }}
-      />
+      <View style={styles.container}>
+        <WeaponEnabledContext.Provider
+          value={{
+            toggleWeaponEnabled: this._toggleWeaponEnabled,
+            weaponEnabled: this.state.weaponEnabled
+          }}
+        >
+          <ViroARSceneNavigator
+            {...this.state.sharedProps}
+            initialScene={{ scene: InitialARScene }}
+          />
+          <Toolbar />
+        </WeaponEnabledContext.Provider>
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+});
 
 module.exports = ViroSample;

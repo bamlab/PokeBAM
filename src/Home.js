@@ -39,7 +39,7 @@ export default class Home extends Component {
           });
         });
       }
-    }, 10);
+    }, 100);
   }
 
   render() {

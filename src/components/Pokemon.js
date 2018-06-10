@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { StyleSheet } from "react-native";
+import { StyleSheet } from 'react-native';
 
 import {
   Viro3DObject,
@@ -10,9 +10,9 @@ import {
   ViroARPlane,
   ViroMaterials,
   ViroQuad
-} from "react-viro";
+} from 'react-viro';
 
-import WeaponEnabledContext from "PokeBAM/src/WeaponEnabledContext";
+import WeaponEnabledContext from 'PokeBAM/src/WeaponEnabledContext';
 
 export default class Pokemon extends Component {
   constructor() {
@@ -31,7 +31,7 @@ export default class Pokemon extends Component {
       <ViroARPlane
         minHeight={0.05}
         minWidth={0.05}
-        alignment={"Horizontal"}
+        alignment={'Horizontal'}
         onAnchorFound={e => {
           this.setState({
             planeCoords: {
@@ -41,6 +41,7 @@ export default class Pokemon extends Component {
             }
           });
         }}
+        visible={this.state.isVisible}
       >
         <ViroAmbientLight color="#FFFFFF" />
         <ViroQuad
@@ -53,23 +54,23 @@ export default class Pokemon extends Component {
           width={10}
           rotation={[-90, 0, 0]}
           physicsBody={{
-            type: "Static"
+            type: 'Static'
           }}
-          materials={["ground"]}
+          materials={['ground']}
         />
         <WeaponEnabledContext.Consumer>
           {({ weaponEnabled }) => {
             return (
               <Viro3DObject
-                source={require("PokeBAM/src/assets/3D/Pokemons/Squirtle/Squirtle.vrx")}
+                source={require('PokeBAM/src/assets/3D/Pokemons/Squirtle/Squirtle.vrx')}
                 resources={[
-                  require("PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Body1.png"),
-                  require("PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Body1Id.png"),
-                  require("PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_BodyNor.png"),
-                  require("PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Eye1.png"),
-                  require("PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Eye1Id.png"),
-                  require("PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Eye2.png"),
-                  require("PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_EyeNor.png")
+                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Body1.png'),
+                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Body1Id.png'),
+                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_BodyNor.png'),
+                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Eye1.png'),
+                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Eye1Id.png'),
+                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Eye2.png'),
+                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_EyeNor.png')
                 ]}
                 position={[
                   this.state.planeCoords.x,
@@ -95,7 +96,7 @@ export default class Pokemon extends Component {
 
 ViroMaterials.createMaterials({
   ground: {
-    diffuseColor: "transparent"
+    diffuseColor: 'transparent'
   }
 });
 

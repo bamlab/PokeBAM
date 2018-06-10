@@ -82,7 +82,7 @@ export default class Pokemon extends Component {
                   type: 'Static'
                 }}
                 onCollision={() => {
-                  if (this.state.life === 1) {
+                  if (this.state.life === 1 || !weaponEnabled) {
                     this.setState({ visible: false, life: 5 }, () => {
                       setTimeout(() => {
                         this.setState({ visible: true });
@@ -92,7 +92,7 @@ export default class Pokemon extends Component {
                     this.setState({ life: this.state.life - 1 });
                   }
                 }}
-                position={[0, 0, -3]}
+                position={[0, 0, -2]}
                 rotation={[-90, 0, 0]}
                 dragType="FixedToWorld"
                 scale={[0.02, 0.02, 0.02]}

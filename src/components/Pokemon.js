@@ -82,7 +82,6 @@ export default class Pokemon extends Component {
                   type: 'Static'
                 }}
                 onCollision={() => {
-                  console.warn('AIE');
                   this.setState({ visible: false }, () => {
                     setTimeout(() => {
                       this.setState({ visible: true });
@@ -95,18 +94,6 @@ export default class Pokemon extends Component {
                 scale={[0.02, 0.02, 0.02]}
                 type="VRX"
                 visible={this.state.visible}
-                onClick={() => {
-                  if (weaponEnabled) {
-                    this.props.scene
-                      .getCameraOrientationAsync()
-                      .then(orientation => {
-                        this.setState({
-                          visible: false,
-                          position: orientation.position
-                        });
-                      });
-                  }
-                }}
               />
             );
           }}

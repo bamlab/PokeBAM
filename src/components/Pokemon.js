@@ -1,84 +1,85 @@
-'use strict';
+"use strict";
 
-import React, { Component } from 'react';
+import React, { Component } from "react";
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 import {
   Viro3DObject,
   ViroAmbientLight,
   ViroARPlane,
   ViroMaterials,
-  ViroQuad
-} from 'react-viro';
+  ViroNode,
+  ViroQuad,
+  ViroParticleEmitter
+} from "react-viro";
 
-import WeaponEnabledContext from 'PokeBAM/src/WeaponEnabledContext';
+import WeaponEnabledContext from "PokeBAM/src/WeaponEnabledContext";
 
 export default class Pokemon extends Component {
   constructor() {
     super();
     this.state = {
-      planeCoords: {
-        x: 0,
-        y: 0,
-        z: 0
-      },
+      position: [0, 0, 0],
       visible: true
     };
   }
   render() {
     return (
-      <ViroARPlane
-        minHeight={0.05}
-        minWidth={0.05}
-        alignment={'Horizontal'}
-        onAnchorFound={e => {
-          this.setState({
-            planeCoords: {
-              x: e.position[0],
-              y: e.position[1],
-              z: e.position[2] - 1
-            }
-          });
-        }}
-        visible={this.state.isVisible}
-      >
+      <ViroNode>
         <ViroAmbientLight color="#FFFFFF" />
-        <ViroQuad
-          position={[
-            this.state.planeCoords.x,
-            this.state.planeCoords.y,
-            this.state.planeCoords.z
-          ]}
-          height={20}
-          width={10}
-          rotation={[-90, 0, 0]}
-          physicsBody={{
-            type: 'Static'
+        <ViroParticleEmitter
+          position={[0, 0, -3]}
+          duration={1200}
+          visible={true}
+          run={true}
+          loop={true}
+          fixedToEmitter={true}
+          image={{
+            source: require("PokeBAM/src/assets/blood.png"),
+            height: 0.3,
+            width: 0.3,
+            bloomThreshold: 0.0
           }}
-          materials={['ground']}
+          spawnBehavior={{
+            particleLifetime: [500, 500],
+            emissionRatePerSecond: [30, 40],
+            maxParticles: 800
+          }}
+          particleAppearance={{
+            opacity: {
+              initialRange: [0.2, 0.2],
+              factor: "Time",
+              interpolation: [
+                { endValue: 0.2, interval: [0, 200] },
+                { endValue: 0.0, interval: [200, 500] }
+              ]
+            },
+            scale: {
+              initialRange: [[1, 1, 1], [1, 1, 1]],
+              factor: "Time",
+              interpolation: [{ endValue: [0, 0, 0], interval: [150, 500] }]
+            }
+          }}
+          particlePhysics={{
+            velocity: { initialRange: [[0, 0.3, 0], [0, 0.5, 0]] }
+          }}
         />
         <WeaponEnabledContext.Consumer>
           {({ weaponEnabled }) => {
             return (
               <Viro3DObject
-                source={require('PokeBAM/src/assets/3D/Pokemons/Squirtle/Squirtle.vrx')}
+                source={require("PokeBAM/src/assets/3D/Pokemons/Pidgey/Pidgey.vrx")}
                 resources={[
-                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Body1.png'),
-                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Body1Id.png'),
-                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_BodyNor.png'),
-                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Eye1.png'),
-                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Eye1Id.png'),
-                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_Eye2.png'),
-                  require('PokeBAM/src/assets/3D/Pokemons/Squirtle/pm0007_00_EyeNor.png')
-                ]}
-                position={[
-                  this.state.planeCoords.x,
-                  this.state.planeCoords.y,
-                  this.state.planeCoords.z
+                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Body1.png"),
+                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Body2.png"),
+                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_BodyNor.png"),
+                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Eye1.png"),
+                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Eye2.png"),
+                  require("PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_EyeNor.png")
                 ]}
                 physicsBody={{
-                  type: 'Static'
+                  type: "Static"
                 }}
                 onCollision={() => {
                   this.setState({ visible: false }, () => {
@@ -87,26 +88,36 @@ export default class Pokemon extends Component {
                     }, 5000);
                   });
                 }}
+                position={[0, 0, -3]}
                 rotation={[-90, 0, 0]}
                 dragType="FixedToWorld"
-                scale={[0.015, 0.015, 0.015]}
+                scale={[0.02, 0.02, 0.02]}
                 type="VRX"
-                visible={this.state.visible}
-                onClick={() =>
-                  weaponEnabled ? this.setState({ visible: false }) : null
-                }
+                visible
+                onClick={() => {
+                  if (weaponEnabled) {
+                    this.props.scene
+                      .getCameraOrientationAsync()
+                      .then(orientation => {
+                        this.setState({
+                          visible: false,
+                          position: orientation.position
+                        });
+                      });
+                  }
+                }}
               />
             );
           }}
         </WeaponEnabledContext.Consumer>
-      </ViroARPlane>
+      </ViroNode>
     );
   }
 }
 
 ViroMaterials.createMaterials({
   ground: {
-    diffuseColor: 'transparent'
+    diffuseColor: "transparent"
   }
 });
 

@@ -71,6 +71,7 @@ export default class Pokeball extends Component {
             useGravity: !this.state.shouldHoldPokeball,
             restitution: 0.5
           }}
+          onCollision={() => console.warn('BOOM')}
           onDrag={() => {}}
           onClick={() => {
             this.pokeball.applyImpulse(

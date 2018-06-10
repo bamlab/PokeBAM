@@ -7,27 +7,27 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 
-import React, { Component } from "react";
+import React, { Component } from 'react';
 
-import { ViroARSceneNavigator } from "react-viro";
+import { ViroARSceneNavigator } from 'react-viro';
 
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View } from 'react-native';
 
-import WeaponEnabledContext from "./src/WeaponEnabledContext";
+import WeaponEnabledContext from './src/WeaponEnabledContext';
 
-import { VIRO_API_KEY } from "./environment.secret";
+import { VIRO_API_KEY } from './environment.secret';
 
-import Toolbar from "./src/components/Toolbar";
+import Toolbar from './src/components/Toolbar';
 
 /*
  TODO: Insert your API key below
  */
 var sharedProps = {
-  apiKey: VIRO_API_KEY
+  apiKey: VIRO_API_KEY,
 };
 
 // Sets the default scene you want for AR
-var InitialARScene = require("./src/Home");
+var InitialARScene = require('./src/Home');
 
 export default class ViroSample extends Component {
   constructor(props) {
@@ -35,10 +35,12 @@ export default class ViroSample extends Component {
 
     this.state = {
       sharedProps: sharedProps,
-      weaponEnabled: false
+      weaponEnabled: false,
+      weaponLoaded: false,
     };
     this._getARNavigator = this._getARNavigator.bind(this);
     this._toggleWeaponEnabled = this._toggleWeaponEnabled.bind(this);
+    this._onWeaponLoaded = this._onWeaponLoaded.bind(this);
   }
 
   // Replace this function with the contents of _getVRNavigator() or _getARNavigator()
@@ -48,7 +50,14 @@ export default class ViroSample extends Component {
   }
 
   _toggleWeaponEnabled() {
-    this.setState({ weaponEnabled: !this.state.weaponEnabled });
+    this.setState({
+      weaponEnabled: !this.state.weaponEnabled,
+      weaponLoaded: false,
+    });
+  }
+
+  _onWeaponLoaded() {
+    this.setState({ weaponLoaded: true });
   }
 
   // Returns the ViroARSceneNavigator which will start the AR experience
@@ -58,7 +67,9 @@ export default class ViroSample extends Component {
         <WeaponEnabledContext.Provider
           value={{
             toggleWeaponEnabled: this._toggleWeaponEnabled,
-            weaponEnabled: this.state.weaponEnabled
+            onWeaponLoaded: this._onWeaponLoaded,
+            weaponEnabled: this.state.weaponEnabled,
+            weaponLoaded: this.state.weaponLoaded,
           }}
         >
           <ViroARSceneNavigator
@@ -74,8 +85,8 @@ export default class ViroSample extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 module.exports = ViroSample;

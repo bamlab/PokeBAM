@@ -23,8 +23,8 @@ export default class Home extends Component {
         orientation: [0, 0, 0],
         forward: [0, 0, 0],
         rotation: [0, 0, 0],
-        up: [0, 0, 0],
-      },
+        up: [0, 0, 0]
+      }
     };
 
     // bind 'this' to functions
@@ -37,7 +37,7 @@ export default class Home extends Component {
       if (this.scene) {
         this.scene.getCameraOrientationAsync().then(orientation => {
           this.setState({
-            orientation,
+            orientation
           });
         });
       }
@@ -74,7 +74,9 @@ export default class Home extends Component {
                     )}
                   />
                 )}
-              <Pokeball orientation={this.state.orientation} />
+              {!weaponEnabled && (
+                <Pokeball orientation={this.state.orientation} />
+              )}
             </ViroARScene>
           );
         }}
@@ -85,7 +87,7 @@ export default class Home extends Component {
   _onInitialized(state, reason) {
     if (state == ViroConstants.TRACKING_NORMAL) {
       this.setState({
-        text: null,
+        text: null
       });
     } else if (state == ViroConstants.TRACKING_NONE) {
       // Handle loss of tracking
@@ -99,8 +101,8 @@ var styles = StyleSheet.create({
     fontSize: 30,
     color: '#ffffff',
     textAlignVertical: 'center',
-    textAlign: 'center',
-  },
+    textAlign: 'center'
+  }
 });
 
 module.exports = Home;

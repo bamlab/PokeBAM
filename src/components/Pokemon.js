@@ -11,7 +11,8 @@ import {
   ViroMaterials,
   ViroNode,
   ViroQuad,
-  ViroParticleEmitter
+  ViroParticleEmitter,
+  ViroAnimations
 } from 'react-viro';
 
 import WeaponEnabledContext from 'PokeBAM/src/WeaponEnabledContext';
@@ -77,6 +78,7 @@ export default class Pokemon extends Component {
           {({ weaponEnabled }) => {
             return (
               <Viro3DObject
+                animation={{ name: 'animatePokemon', run: true, loop: true }}
                 source={require('PokeBAM/src/assets/3D/Pokemons/Pidgey/Pidgey.vrx')}
                 resources={[
                   require('PokeBAM/src/assets/3D/Pokemons/Pidgey/pm0016_00_Body1.png'),
@@ -126,6 +128,26 @@ ViroMaterials.createMaterials({
   ground: {
     diffuseColor: 'transparent'
   }
+});
+
+ViroAnimations.registerAnimations({
+  moveRight: {
+    properties: { positionX: '+=1' },
+    duration: 500
+  },
+  moveLeft: {
+    properties: { positionX: '-=1' },
+    duration: 500
+  },
+  moveUp: {
+    properties: { positionY: '+=0.3' },
+    duration: 500
+  },
+  moveDown: {
+    properties: { positionY: '-=0.3' },
+    duration: 500
+  },
+  animatePokemon: [['moveRight', 'moveUp', 'moveLeft', 'moveDown']]
 });
 
 module.exports = Pokemon;

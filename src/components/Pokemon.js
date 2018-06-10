@@ -21,7 +21,8 @@ export default class Pokemon extends Component {
     super(props);
     this.state = {
       visible: true,
-      life: 5
+      life: 5,
+      showBlood: false
     };
   }
   render() {
@@ -29,40 +30,47 @@ export default class Pokemon extends Component {
       <ViroNode>
         <ViroAmbientLight color="#FFFFFF" />
         <ViroParticleEmitter
-          position={[0, 0, -3]}
+          position={[0, 0, -2]}
           duration={1200}
           visible={true}
-          run={true}
-          loop={true}
+          run={this.state.showBlood}
           fixedToEmitter={true}
           image={{
             source: require('PokeBAM/src/assets/blood.png'),
-            height: 0.3,
-            width: 0.3,
+            height: 0.1,
+            width: 0.1,
             bloomThreshold: 0.0
           }}
           spawnBehavior={{
-            particleLifetime: [500, 500],
-            emissionRatePerSecond: [30, 40],
-            maxParticles: 800
+            particleLifetime: [1200, 1200],
+            emissionRatePerSecond: [0, 0],
+            emissionBurst: [{ time: 0, min: 300, max: 350, cycles: 1 }],
+            spawnVolume: {
+              shape: 'sphere',
+              params: [0.15],
+              spawnOnSurface: true
+            },
+            maxParticles: 1000
           }}
           particleAppearance={{
             opacity: {
-              initialRange: [0.2, 0.2],
+              initialRange: [1.0, 1.0],
               factor: 'Time',
-              interpolation: [
-                { endValue: 0.2, interval: [0, 200] },
-                { endValue: 0.0, interval: [200, 500] }
-              ]
+              interpolation: [{ endValue: 0.0, interval: [800, 1200] }]
             },
-            scale: {
-              initialRange: [[1, 1, 1], [1, 1, 1]],
+
+            color: {
+              initialRange: ['red', 'red'],
               factor: 'Time',
-              interpolation: [{ endValue: [0, 0, 0], interval: [150, 500] }]
+              interpolation: [{ endValue: 'red', interval: [300, 1200] }]
             }
           }}
           particlePhysics={{
-            velocity: { initialRange: [[0, 0.3, 0], [0, 0.5, 0]] }
+            explosiveImpulse: {
+              impulse: 0.12 * 6.0,
+              position: [0, 0, 0],
+              decelerationPeriod: 1.0
+            }
           }}
         />
         <WeaponEnabledContext.Consumer>
@@ -89,7 +97,14 @@ export default class Pokemon extends Component {
                       }, 5000);
                     });
                   } else {
-                    this.setState({ life: this.state.life - 1 });
+                    this.setState(
+                      { life: this.state.life - 1, showBlood: true },
+                      () => {
+                        setTimeout(() => {
+                          this.setState({ showBlood: false });
+                        }, 20);
+                      }
+                    );
                   }
                 }}
                 position={[0, 0, -2]}

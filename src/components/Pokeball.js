@@ -9,6 +9,10 @@ import {
   ViroSpotLight
 } from 'react-viro';
 
+const PokeBallForwardFactor = 0.1;
+const PokeBallUpFactor = 0.03;
+const ForceForwardFactor = 5;
+
 export default class Pokeball extends Component {
   constructor() {
     super();
@@ -17,22 +21,46 @@ export default class Pokeball extends Component {
     };
     this.pokeball = null;
   }
+
+  shouldComponentUpdate(nextProps) {
+    return this.state.shouldHoldPokeball;
+  }
+
   render() {
+    const { orientation } = this.props;
     return (
       <ViroNode>
         <ViroAmbientLight color="#FFFFFF" />
         <ViroSpotLight
           innerAngle={5}
           outerAngle={90}
-          direction={[0, -1, -0.2]}
-          position={[0, 3, 1]}
+          direction={orientation.forward}
+          position={[
+            orientation.position[0],
+            orientation.position[1],
+            orientation.position[2]
+          ]}
           color="#ffffff"
           castsShadow={true}
         />
         <Viro3DObject
           source={require('PokeBAM/src/assets/3D/Pokeballs/Regular/pokeball.obj')}
-          position={[0, 0, -0.1]}
-          rotation={[0, -90, 0]}
+          position={[
+            orientation.position[0] +
+              orientation.forward[0] * PokeBallForwardFactor -
+              orientation.up[0] * PokeBallUpFactor,
+            orientation.position[1] +
+              orientation.forward[1] * PokeBallForwardFactor -
+              orientation.up[1] * PokeBallUpFactor,
+            orientation.position[2] +
+              orientation.forward[2] * PokeBallForwardFactor -
+              orientation.up[2] * PokeBallUpFactor
+          ]}
+          rotation={[
+            orientation.rotation[0],
+            orientation.rotation[1] - 90,
+            orientation.rotation[2]
+          ]}
           ref={pokeball => (this.pokeball = pokeball)}
           scale={[0.0001, 0.0001, 0.0001]}
           type="OBJ"
@@ -45,7 +73,9 @@ export default class Pokeball extends Component {
           }}
           onDrag={() => {}}
           onClick={() => {
-            this.pokeball.applyImpulse([0, 1, -1]);
+            this.pokeball.applyImpulse(
+              orientation.forward.map(n => n * ForceForwardFactor)
+            );
             this.setState({ shouldHoldPokeball: false });
           }}
         />

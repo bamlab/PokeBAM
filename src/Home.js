@@ -15,16 +15,41 @@ export default class Home extends Component {
 
     // Set initial state here
     this.state = {
-      text: 'Starting PokeBAM...'
+      text: 'Starting PokeBAM...',
+      orientation: {
+        position: [0, 0, 0],
+        orientation: [0, 0, 0],
+        forward: [0, 0, 0],
+        rotation: [0, 0, 0],
+        up: [0, 0, 0]
+      }
     };
 
     // bind 'this' to functions
     this._onInitialized = this._onInitialized.bind(this);
+    this.scene = null;
+  }
+
+  componentDidMount() {
+    setInterval(() => {
+      if (this.scene) {
+        this.scene.getCameraOrientationAsync().then(orientation => {
+          this.setState({
+            orientation
+          });
+        });
+      }
+    }, 10);
   }
 
   render() {
     return (
-      <ViroARScene onTrackingUpdated={this._onInitialized}>
+      <ViroARScene
+        onTrackingUpdated={this._onInitialized}
+        ref={ref => {
+          this.scene = ref;
+        }}
+      >
         {this.state.text && (
           <ViroText
             text={this.state.text}
@@ -34,7 +59,7 @@ export default class Home extends Component {
           />
         )}
         <Pokemon />
-        <Pokeball />
+        <Pokeball orientation={this.state.orientation} />
       </ViroARScene>
     );
   }

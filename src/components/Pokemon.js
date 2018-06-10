@@ -77,6 +77,16 @@ export default class Pokemon extends Component {
                   this.state.planeCoords.y,
                   this.state.planeCoords.z
                 ]}
+                physicsBody={{
+                  type: 'Static'
+                }}
+                onCollision={() => {
+                  this.setState({ visible: false }, () => {
+                    setTimeout(() => {
+                      this.setState({ visible: true });
+                    }, 5000);
+                  });
+                }}
                 rotation={[-90, 0, 0]}
                 dragType="FixedToWorld"
                 scale={[0.015, 0.015, 0.015]}

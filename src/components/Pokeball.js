@@ -89,7 +89,7 @@ export default class Pokeball extends Component {
                   () => {
                     setTimeout(() => {
                       this.setState({ shouldResetPokeball: false });
-                    }, 1000);
+                    }, 200);
                   }
                 );
               }, 1000);

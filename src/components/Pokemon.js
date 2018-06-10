@@ -11,7 +11,8 @@ import {
   ViroMaterials,
   ViroNode,
   ViroQuad,
-  ViroParticleEmitter
+  ViroParticleEmitter,
+  ViroSound
 } from 'react-viro';
 
 import WeaponEnabledContext from 'PokeBAM/src/WeaponEnabledContext';
@@ -73,6 +74,16 @@ export default class Pokemon extends Component {
             }
           }}
         />
+        <ViroSound
+          source={require('PokeBAM/src/assets/pidgey.mp3')}
+          loop
+          paused={!this.state.showBlood || this.state.life === 5}
+        />
+        <ViroSound
+          source={require('PokeBAM/src/assets/pidgeotto.mp3')}
+          loop
+          paused={!this.state.showBlood || this.state.life !== 5}
+        />
         <WeaponEnabledContext.Consumer>
           {({ weaponEnabled }) => {
             return (
@@ -91,11 +102,17 @@ export default class Pokemon extends Component {
                 }}
                 onCollision={() => {
                   if (this.state.life === 1 || !weaponEnabled) {
-                    this.setState({ visible: false, life: 5 }, () => {
-                      setTimeout(() => {
-                        this.setState({ visible: true });
-                      }, 5000);
-                    });
+                    this.setState(
+                      { visible: false, showBlood: true, life: 5 },
+                      () => {
+                        setTimeout(() => {
+                          this.setState({ showBlood: false });
+                        }, 20);
+                        setTimeout(() => {
+                          this.setState({ visible: true });
+                        }, 5000);
+                      }
+                    );
                   } else {
                     this.setState(
                       { life: this.state.life - 1, showBlood: true },

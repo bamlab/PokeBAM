@@ -28,6 +28,9 @@ export default class Pokeball extends Component {
 
   render() {
     const { orientation } = this.props;
+    if (this.state.shouldResetPokeball) {
+      return null;
+    }
     return (
       <ViroNode>
         <ViroAmbientLight color="#FFFFFF" />
@@ -71,13 +74,26 @@ export default class Pokeball extends Component {
             useGravity: !this.state.shouldHoldPokeball,
             restitution: 0.5
           }}
-          onCollision={() => console.warn('BOOM')}
           onDrag={() => {}}
           onClick={() => {
             this.pokeball.applyImpulse(
               orientation.forward.map(n => n * ForceForwardFactor)
             );
-            this.setState({ shouldHoldPokeball: false });
+            this.setState({ shouldHoldPokeball: false }, () => {
+              setTimeout(() => {
+                this.setState(
+                  {
+                    shouldResetPokeball: true,
+                    shouldHoldPokeball: true
+                  },
+                  () => {
+                    setTimeout(() => {
+                      this.setState({ shouldResetPokeball: false });
+                    }, 1000);
+                  }
+                );
+              }, 1000);
+            });
           }}
         />
       </ViroNode>
